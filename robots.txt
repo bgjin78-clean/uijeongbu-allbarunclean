@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://uijeongbu.allbarunclean.com/sitemap.xml

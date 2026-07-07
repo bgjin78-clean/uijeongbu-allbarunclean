@@ -1,0 +1,42 @@
+{
+  "city": "의정부시",
+  "brandName": "의정부 올바른정리",
+  "phone": "010-4393-2414",
+  "siteUrl": "https://uijeongbu.allbarunclean.com",
+  "districts": [
+    {
+      "slug": "central",
+      "name": "시내권",
+      "dongs": [
+        { "slug": "uijeongbu1", "name": "의정부1동" },
+        { "slug": "uijeongbu2", "name": "의정부2동" },
+        { "slug": "uijeongbu3", "name": "의정부3동" },
+        { "slug": "howon", "name": "호원동" },
+        { "slug": "jangam", "name": "장암동" }
+      ]
+    },
+    {
+      "slug": "north",
+      "name": "민락·북부권",
+      "dongs": [
+        { "slug": "minrak", "name": "민락동" },
+        { "slug": "singok", "name": "신곡동" },
+        { "slug": "yonghyeon", "name": "용현동" },
+        { "slug": "ganeung", "name": "가능동" },
+        { "slug": "nogyang", "name": "녹양동" },
+        { "slug": "geumo", "name": "금오동" }
+      ]
+    },
+    {
+      "slug": "east",
+      "name": "동부·외곽권",
+      "dongs": [
+        { "slug": "gosan", "name": "고산동" },
+        { "slug": "songsan", "name": "송산동" },
+        { "slug": "nakyang", "name": "낙양동" },
+        { "slug": "hoeryong", "name": "회룡동" },
+        { "slug": "beomgol", "name": "범골동" }
+      ]
+    }
+  ]
+}
