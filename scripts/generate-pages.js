@@ -4,6 +4,7 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..");
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, "data/regions.json"), "utf8"));
 const imageData = JSON.parse(fs.readFileSync(path.join(__dirname, "data/images.json"), "utf8"));
+const localContent = JSON.parse(fs.readFileSync(path.join(__dirname, "data/local-content.json"), "utf8"));
 const { city, brandName, phone, siteUrl, districts } = data;
 const { pageSets, schema, schemaBase, ogImage } = imageData;
 
@@ -74,24 +75,27 @@ function areaLinksHtml(pageDepth, currentGu, currentDong) {
 }
 
 function seoContent(placeName, isSubRegion, parentGu) {
-  const fullPlace = isSubRegion ? `${city} ${placeName}` : `${city} ${placeName}`;
+  const fullPlace = `${city} ${placeName}`;
   const localNote = getLocalNote(placeName, isSubRegion, parentGu);
+  const local = localContent[placeName];
+  const cases = local.cases.map((c) => `<li>${c}</li>`).join("\n      ");
   return `
-    <h3>${fullPlace} 유품정리와 폐기물처리, 어떻게 진행되나요?</h3>
-    <p>${fullPlace}에서는 유품정리, 고독사청소, 특수청소와 함께 쓰레기집청소, 빈집정리, 가정·이사·폐업폐기물처리 상담이 꾸준히 접수됩니다. 의정부시는 경전철·KTX·일반 철도가 연결된 교통 중심지이며, 아파트·빌라·단독주택·상가·오피스텔 등 현장 형태가 다양해 작업 전 상담이 중요합니다.</p>
-    <h3>${fullPlace} 지역 특성과 작업 포인트</h3>
-    <p>${localNote}</p>
-    <h3>${fullPlace} 유품정리 비용은 어떻게 결정될까요?</h3>
-    <p>유품정리 비용은 평수만으로 정해지지 않습니다. 유품의 양, 폐기물 반출량, 가구·가전 크기, 엘리베이터·주차 환경, 특수청소 필요 여부가 함께 반영됩니다. 의정부시는 민락신도시와 구도심이 함께 있어 같은 서비스라도 반출 동선과 차량 진입 조건에 따라 작업 계획이 달라질 수 있습니다.</p>
-    <h3>${fullPlace} 폐기물처리가 필요한 대표 상황</h3>
+    <h3>${fullPlace}은 어떤 지역인가요?</h3>
+    <p>${local.intro} ${localNote}</p>
+    <h3>${fullPlace} 주거 형태와 작업 포인트</h3>
+    <p>${local.housing}</p>
+    <h3>${fullPlace}에서 자주 접수되는 상담</h3>
     <ul>
-      <li>이사 전후 불필요한 가구·생활용품 대량 반출</li>
-      <li>빈집 매매·임대 전 남은 짐과 생활폐기물 정리</li>
-      <li>장기간 방치된 공간의 쓰레기집청소</li>
-      <li>상가·사무실·창고 폐업 후 집기와 폐기물 처리</li>
+      ${cases}
     </ul>
-    <h3>${fullPlace} 작업 전 확인하면 좋은 내용</h3>
-    <p>유품정리의 경우 보관할 물품, 중요 서류, 통장, 도장, 사진 등을 가능한 범위에서 먼저 확인하는 것이 좋습니다. 폐기물처리는 전체 공간 사진, 폐기물 양, 건물 입구·엘리베이터·주차 가능 여부를 함께 알려주시면 더 빠른 상담이 가능합니다.</p>
+    <h3>${fullPlace} 반출 동선과 작업 팁</h3>
+    <p>${local.tip}</p>
+    <h3>${fullPlace} 비용은 어떻게 정해지나요?</h3>
+    <p>비용은 평수만으로 정해지지 않습니다. 물품과 폐기물의 양, 가구·가전 크기, 엘리베이터·주차 환경, 특수청소 필요 여부가 함께 반영되며, 위에 정리한 ${placeName} 현장 조건에 따라 인원과 차량 계획이 달라집니다.</p>
+    <h3>자주 묻는 질문 · ${local.faq.q}</h3>
+    <p>${local.faq.a}</p>
+    <h3>상담 전 준비하면 좋은 내용</h3>
+    <p>유품정리는 보관할 물품, 중요 서류, 통장, 도장, 사진 등을 가능한 범위에서 먼저 확인해 주세요. 폐기물처리는 전체 공간 사진과 건물 입구·엘리베이터·주차 가능 여부를 함께 알려주시면 더 빠르게 안내드릴 수 있습니다.</p>
   `;
 }
 
@@ -158,7 +162,7 @@ function buildPage({ placeName, isSubRegion, parentGu, guSlug, dongSlug, depth, 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${fullPlace} 유품정리 · 폐기물처리 | ${brandName}</title>
-  <meta name="description" content="${fullPlace} 유품정리, 고독사청소, 특수청소, 쓰레기집청소, 빈집정리, 가정·이사·폐업폐기물처리 전문 상담. ${brandName}가 현장에 맞춰 안내합니다." />
+  <meta name="description" content="${localContent[placeName].intro} ${fullPlace} 유품정리·고독사청소·쓰레기집청소·이사폐기물처리 상담은 ${brandName}." />
   <meta name="keywords" content="${fullPlace} 유품정리, ${fullPlace} 폐기물처리, ${fullPlace} 고독사청소, ${fullPlace} 빈집정리, ${brandName}" />
   <meta property="og:title" content="${fullPlace} 유품정리 · 폐기물처리 | ${brandName}" />
   <meta property="og:description" content="${fullPlace} 유품정리·폐기물처리 전문 상담. 현장 확인 후 비용과 일정을 안내합니다." />
